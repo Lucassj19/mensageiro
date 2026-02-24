@@ -58,7 +58,7 @@ mensageiro/
 
 ---
 
-## ⚙️ Stack Tecnológica
+##  Stack Tecnológica
 
 **Backend**
 - Java 17 + Spring Boot 3.2
@@ -81,7 +81,7 @@ mensageiro/
 
 ---
 
-## 🔐 Autenticação
+##  Autenticação
 
 A API usa **JWT Bearer Token**. Rotas públicas:
 - `POST /api/auth/register` — Cadastro
@@ -94,7 +94,7 @@ Authorization: Bearer <token>
 
 ---
 
-## 📚 Endpoints da API
+##  Endpoints da API
 
 ### Auth
 | Método | Rota | Descrição |
