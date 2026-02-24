@@ -27,7 +27,6 @@ Aguarde todos os serviços iniciarem (cerca de 2-3 minutos no primeiro build).
 |---------|-----|
 | **Frontend** | http://localhost:3000 |
 | **Swagger UI** | http://localhost:8080/swagger-ui.html |
-| **MailHog (inbox)** | http://localhost:8025 |
 
 ---
 
