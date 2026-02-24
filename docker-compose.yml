@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mensageiro-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mensageiro
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - mensageiro-net
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mensageiro-mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - mensageiro-net
+
+  backend:
+    build: ./mensageiro
+    container_name: mensageiro-backend
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://db:3306/mensageiro?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      JWT_SECRET: mensageiro-super-secret-key-at-least-32-chars-long
+      MAIL_HOST: mailhog
+      MAIL_PORT: 1025
+      MAIL_FROM: noreply@mensageiro.com
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - mensageiro-net
+
+  frontend:
+    build: ./mensageiro-frontend
+    container_name: mensageiro-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - mensageiro-net
+
+volumes:
+  mysql_data:
+
+networks:
+  mensageiro-net:
+    driver: bridge
